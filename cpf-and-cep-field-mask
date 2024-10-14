@@ -1,0 +1,54 @@
+<script type="text/javascript">
+function mask(o, f) {
+    v_obj = o;
+    v_fun = f;
+    setTimeout("execmask()", 1);
+}
+
+function execmask() {
+    v_obj.value = v_fun(v_obj.value);
+}
+
+function maskcep(v) {
+    v = v.replace(/\D/g, ""); // Remove tudo o que não é dígito
+    v = v.substring(0, 8); // Limita a 8 dígitos
+    v = v.replace(/^(\d{5})(\d)/, "$1-$2"); // Insere hífen antes dos últimos 3 dígitos
+    return v;
+}
+
+function maskcpf(v) { 
+    v = v.replace(/\D/g, ""); // Remove tudo o que não é dígito
+    v = v.replace(/(\d{3})(\d)/, "$1.$2"); // Adiciona o primeiro ponto
+    v = v.replace(/(\d{3})(\d)/, "$1.$2"); // Adiciona o segundo ponto
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); // Adiciona o hífen antes dos últimos 2 dígitos
+    return v;
+}
+
+function idcss(el) {
+    return document.getElementById(el);
+}
+
+window.onload = function() {
+    var cepInput = idcss('cep');
+    cepInput.setAttribute('maxlength', 9);
+    
+    cepInput.onkeypress = function() {
+        mask(this, maskcep);
+    }
+
+    cepInput.oninput = function() {
+        mask(this, maskcep);
+    }
+
+    var cpfInput = idcss('cpf'); // Altere para o ID do seu campo CPF
+    cpfInput.setAttribute('maxlength', 14); // Max length para o CPF
+    
+    cpfInput.onkeypress = function() {
+        mask(this, maskcpf);
+    }
+
+    cpfInput.oninput = function() {
+        mask(this, maskcpf);
+    }
+}
+</script>
